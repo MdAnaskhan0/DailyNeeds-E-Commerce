@@ -1,0 +1,22 @@
+# Node modules
+node_modules/
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+
+# Environment variables
+.env
+
+# Ignore Mac system files
+.DS_Store
+
+# Ignore production build directory
+dist/
+build/
+
+# Ignore IDE and editor specific files
+.vscode/
+.idea/
+*.swp
