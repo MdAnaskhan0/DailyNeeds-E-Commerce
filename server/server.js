@@ -2,20 +2,25 @@ const express = require("express");
 const dotenv = require("dotenv");
 const morgan = require("morgan");
 const connectDB = require("./config/db");
+const authRoutes = require("./routes/authRoutes"); 
 
 // Configure dotenv
 dotenv.config();
 
-//database connect
-
+// Database connect
 connectDB();
+
 const app = express();
 
-//middleware
-
+// Middleware
 app.use(morgan("dev"));
 app.use(express.json());
+
 // Routes
+app.use("/api/v1/auth", authRoutes);
+
+// Test route
+
 app.get("/", (req, res) => {
   res.send("emon");
 });
