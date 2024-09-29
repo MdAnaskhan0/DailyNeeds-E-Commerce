@@ -11,6 +11,7 @@
   "author": "Anas and Emon <emon.cse273@gmail.com>",
   "license": "ISC",
   "dependencies": {
+    "bcrypt": "^5.1.1",
     "dotenv": "^16.4.5",
     "express": "^4.21.0",
     "mongoose": "^8.7.0",
