@@ -10,8 +10,6 @@ const Register = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault(); // Prevent default form submission
-
-        // Here you can handle the registration logic
         console.log('Form submitted:', { name, email, password, phone, address });
     };
 
