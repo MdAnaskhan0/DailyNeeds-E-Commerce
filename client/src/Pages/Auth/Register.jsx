@@ -1,84 +1,91 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Layout from '../../Components/Layout/Layout';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
+
+// Define the Zod schema
+const registerSchema = z.object({
+    name: z.string().min(1, "Name is required"),
+    email: z.string().email("Invalid email address"),
+    password: z.string().min(6, "Password must be at least 6 characters"),
+    phone: z.string().regex(/^\d{10}$/, "Phone number must be 10 digits"),
+    address: z.string().min(1, "Address is required")
+});
 
 const Register = () => {
-    const [name, setName] = useState("");
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [phone, setPhone] = useState("");
-    const [address, setAddress] = useState("");
+    // Use useForm hook with Zod resolver
+    const { register, handleSubmit, formState: { errors } } = useForm({
+        resolver: zodResolver(registerSchema),
+    });
 
-    const handleSubmit = (e) => {
-        e.preventDefault(); // Prevent default form submission
-        console.log('Form submitted:', { name, email, password, phone, address });
+    // onSubmit function to handle form submission
+    const onSubmit = (data) => {
+        console.log('Form submitted:', data);
     };
 
     return (
         <Layout>
             <div className="flex justify-center items-center h-fit pt-20 ">
-                <form onSubmit={handleSubmit} className="w-screen max-w-md bg-gray-100 p-8 rounded-lg shadow-md">
+                <form onSubmit={handleSubmit(onSubmit)} className="w-screen max-w-md bg-gray-100 p-8 rounded-lg shadow-md">
                     <h1 className="text-2xl font-bold mb-6 text-center">Register</h1>
 
+                    {/* Name Field */}
                     <div className="mb-4">
                         <input
                             type="text"
                             placeholder="Enter Your Name"
-                            name="name"
-                            value={name}
-                            onChange={(e) => setName(e.target.value)}
-                            required
+                            {...register("name")}
                             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-400"
                         />
+                        {errors.name && <p className="text-red-500 text-sm">{errors.name.message}</p>}
                     </div>
 
+                    {/* Email Field */}
                     <div className="mb-4">
                         <input
                             type="email"
                             placeholder="Enter Your Email"
-                            name="email"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            required
+                            {...register("email")}
                             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-400"
                         />
+                        {errors.email && <p className="text-red-500 text-sm">{errors.email.message}</p>}
                     </div>
 
+                    {/* Password Field */}
                     <div className="mb-4">
                         <input
                             type="password"
                             placeholder="Enter Your Password"
-                            name="password"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            required
+                            {...register("password")}
                             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-400"
                         />
+                        {errors.password && <p className="text-red-500 text-sm">{errors.password.message}</p>}
                     </div>
 
+                    {/* Phone Field */}
                     <div className="mb-4">
                         <input
                             type="tel"
                             placeholder="Enter Your Phone"
-                            name="phone"
-                            value={phone}
-                            onChange={(e) => setPhone(e.target.value)}
-                            required
+                            {...register("phone")}
                             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-400"
                         />
+                        {errors.phone && <p className="text-red-500 text-sm">{errors.phone.message}</p>}
                     </div>
 
+                    {/* Address Field */}
                     <div className="mb-4">
                         <input
                             type="text"
                             placeholder="Enter Your Address"
-                            name="address"
-                            value={address}
-                            onChange={(e) => setAddress(e.target.value)}
-                            required
+                            {...register("address")}
                             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-400"
                         />
+                        {errors.address && <p className="text-red-500 text-sm">{errors.address.message}</p>}
                     </div>
 
+                    {/* Submit Button */}
                     <button
                         type="submit"
                         className="w-full bg-gray-600 text-white py-2 rounded-lg hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-700"
