@@ -9,7 +9,7 @@ const Footer = () => {
                 <div className="flex flex-col md:flex-row md:justify-between items-center md:items-start">
                     {/* Left Div */}
                     <div className="w-full md:w-1/3 mb-4 text-left md:text-left order-1 text-center">
-                        <p className="text-gray-600">© 2020 Your Company, Inc. All rights reserved.</p>
+                        <p className="text-gray-600">© 2024 Your Company, Inc. All rights reserved.</p>
                     </div>
 
                     {/* Middle Div - Moves to bottom on mobile */}
