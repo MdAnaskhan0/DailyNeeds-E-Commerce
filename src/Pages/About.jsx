@@ -16,7 +16,7 @@ const About = () => {
                             </p>
                         </div>
                     </div>
-                    <div className="md:w-2/5 md:pl-10 mb-6 md:mb-0 px-20">
+                    <div className="md:w-2/5 md:pl-10 mb-6 md:mb-0 p-20">
                         <img
                             src="https://pbs.twimg.com/media/GYq2pQnacAAhRoD?format=jpg&name=4096x4096"
                             alt="Team working together"
