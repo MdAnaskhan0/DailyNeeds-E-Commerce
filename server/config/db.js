@@ -5,7 +5,7 @@ const dotenv = require("dotenv");
 // Load environment variables from .env
 dotenv.config();
 
-// MongoDB connection function
+// MongoDB connection functions
 const connectDB = async () => {
   try {
     const conn = await mongoose.connect(process.env.MONGO_DB_URL, {
