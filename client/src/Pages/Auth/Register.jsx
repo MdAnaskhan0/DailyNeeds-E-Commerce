@@ -3,9 +3,10 @@ import Layout from '../../Components/Layout/Layout';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { toast } from 'react-toastify';
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
+import toast from 'react-hot-toast';
+
 
 
 // Define the Zod schema

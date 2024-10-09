@@ -7,8 +7,7 @@ import PageNotFound from "./Pages/PageNotFound";
 import Register from "./Pages/Auth/Register";
 import Cart from "./Pages/Cart";
 import Policy from "./Pages/Policy";
-import { ToastContainer} from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+
 
 
 function App() {
