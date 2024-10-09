@@ -1,8 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Layout from '../../Components/Layout/Layout';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { toast } from 'react-toastify';
+import axios from 'axios'
+import { useNavigate } from 'react-router-dom'
+
 
 // Define the Zod schema
 const registerSchema = z.object({
@@ -19,10 +23,30 @@ const Register = () => {
         resolver: zodResolver(registerSchema),
     });
 
+    const navigate = useNavigate()
+
     // onSubmit function to handle form submission
-    const onSubmit = (data) => {
-        console.log('Form submitted:', data);
+    const onSubmit = async (data) => {
+        // console.log(data);
+        // console.log('REGISTER_URL:', import.meta.env.VITE_REGISTER_URL);
+    
+        const { name, email, password, address, phone } = data;
+        try {
+            const res = await axios.post(`${import.meta.env.VITE_REGISTER_URL}/api/v1/auth/register`, { name, email, password, address, phone });
+            if (res.data.success) {
+                toast.success(res.data.message);
+                navigate("/login");
+            } else {
+                toast.error(res.data.message);
+            }
+        } catch (error) {
+            console.log(error);
+            toast.error("Something went wrong");
+        }
     };
+    
+
+    const [message, setMessage] = useState("");
 
     return (
         <Layout>
@@ -85,8 +109,10 @@ const Register = () => {
                         {errors.address && <p className="text-red-500 text-sm">{errors.address.message}</p>}
                     </div>
 
+
+
                     {/* Submit Button */}
-                    <button
+                    <button onClick={() => setMessage("Registration Done")}
                         type="submit"
                         className="w-full bg-gray-600 text-white py-2 rounded-lg hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-700"
                     >
