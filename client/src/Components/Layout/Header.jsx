@@ -2,13 +2,26 @@ import React, { useState } from "react";
 import { AiFillShop } from "react-icons/ai";
 import { FaBars, FaTimes } from "react-icons/fa";
 import { Link } from 'react-router-dom';
+import { useAuth } from "../../Context/Auth";
+import toast from "react-hot-toast";
 
 const Navbar = () => {
     const [isOpen, setIsOpen] = useState(false);
+    const [auth, setAuth] = useAuth();
 
     const toggleMenu = () => {
         setIsOpen(!isOpen);
     };
+
+    const handleLogOut = () => {
+        setAuth({
+            user: null,
+            token: "",
+        });
+        localStorage.removeItem("auth");
+        toast.success("Logout Successfully");
+    };
+    
 
     return (
         <nav className="bg-white p-4 shadow-md">
@@ -30,16 +43,28 @@ const Navbar = () => {
                             Category
                         </Link>
                     </li>
-                    <li>
-                        <Link to="/register" className="text-gray-600 text-lg font-semibold hover:text-black">
-                            Register
-                        </Link>
-                    </li>
-                    <li>
-                        <Link to="/login" className="text-gray-600 text-lg font-semibold hover:text-black">
-                            Login
-                        </Link>
-                    </li>
+                    {
+                        !auth.user ? (
+                            <>
+                                <li>
+                                    <Link to="/register" className="text-gray-600 text-lg font-semibold hover:text-black">
+                                        Register
+                                    </Link>
+                                </li>
+                                <li>
+                                    <Link to="/login" className="text-gray-600 text-lg font-semibold hover:text-black">
+                                        Login
+                                    </Link>
+                                </li>
+                            </>) : (
+                            <>
+                                <li>
+                                    <Link to="/login" onClick={handleLogOut} className="text-gray-600 text-lg font-semibold hover:text-black">
+                                        Logout
+                                    </Link>
+                                </li>
+                            </>)
+                    }
                     <li>
                         <Link to="/cart" className="text-gray-600 text-lg font-semibold hover:text-black">
                             Cart (0)

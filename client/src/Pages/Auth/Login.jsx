@@ -3,6 +3,10 @@ import Layout from '../../Components/Layout/Layout';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
+import {useNavigate } from 'react-router-dom'
+import toast from 'react-hot-toast';
+import axios from 'axios'
+import { useAuth } from '../../Context/Auth';
 
 // Zod schema for login validation
 const loginSchema = z.object({
@@ -16,9 +20,33 @@ const Login = () => {
         resolver: zodResolver(loginSchema)
     });
 
+    const [auth, setAuth] = useAuth();
+    const navigate = useNavigate();
+
     // Submit handler
-    const handleLogin = (data) => {
-        console.log('Form Submitted:', data);
+    const handleLogin = async(data) => {
+        // console.log('Form Submitted:', data);
+        const {email, password} = data;
+
+        try {
+            const res = await axios.post(`${import.meta.env.VITE_REGISTER_URL}/api/v1/auth/login`, { email, password});
+            if(res.data.success){
+                toast.success("Login Successfully");
+                setAuth({
+                    ...auth,
+                    user: res.data.user,
+                    token: res.data.token,
+                });
+                localStorage.setItem('auth', JSON.stringify(res.data));
+                navigate("/");
+            }else{
+                toast.error(res.data.message);
+            }
+        } catch (error) {
+            console.log(error);
+            toast("Something is wrong.")
+        }
+
     };
 
     return (
