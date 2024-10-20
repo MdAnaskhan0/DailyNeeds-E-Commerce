@@ -17,5 +17,6 @@ router.post("/register", registerController);
 //login method
 router.post("/login", loginController);
 
-router.get("/test",requireSignin,isadmin,testcontroller)
+router.get("/test",requireSignin,isadmin,testcontroller);
+
 module.exports = router;

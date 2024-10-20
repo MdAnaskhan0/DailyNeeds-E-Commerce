@@ -89,7 +89,7 @@ const Login = () => {
 
                     <div className='flex justify-between'>
                         {/* Forgot Button */}
-                        <p onClick={()=>{navigate('/forget-password')}} className='pt-5 cursor-pointer text-gray-400 hover:text-gray-700'>Forgot Password</p>
+                        <p onClick={()=>{navigate('/forgot-password')}} className='pt-5 cursor-pointer text-gray-400 hover:text-gray-700'>Forgot Password</p>
 
                         {/* Create new account */}
                         <p onClick={()=>{navigate('/register')}} className='pt-5 cursor-pointer text-gray-400 hover:text-gray-700'>Create new account</p>

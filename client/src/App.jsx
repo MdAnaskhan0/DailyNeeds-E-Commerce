@@ -9,6 +9,7 @@ import Cart from "./Pages/Cart";
 import Policy from "./Pages/Policy";
 import Dashboard from "./Pages/User/Dashboard";
 import PrivateRoute from "./Components/Routes/Private";
+import ForgotPassword from "./Pages/Auth/ForgotPassword";
 
 
 
@@ -16,10 +17,11 @@ function App() {
   return (
     <Routes>
       <Route path="/" element={<HomePage />} />
-      <Route path="Dashboard" element={<PrivateRoute />}>
+      <Route path="/Dashboard" element={<PrivateRoute />}>
         <Route path="" element={<Dashboard />} />
       </Route>
       <Route path="/Login" element={<Login />} />
+      <Route path="/Forgot-password" element={<ForgotPassword />} />
       <Route path="/Register" element={<Register />} />
       <Route path="/About" element={<About />} />
       <Route path="/Contact" element={<Contact />} />

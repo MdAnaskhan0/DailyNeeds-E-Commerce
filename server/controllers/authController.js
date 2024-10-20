@@ -113,7 +113,11 @@ const loginController = (async = async (req, res) => {
 //test controller
 
 const testcontroller = (req, res) => {
-  res.send("protected routes")
+  return res.status(200).send({
+    ok: true,
+    message: "Dashboard redirect success",
+  });
 };
+
 // Export the controller
-module.exports = { registerController, loginController ,testcontroller};
+module.exports = { registerController, loginController, testcontroller };
