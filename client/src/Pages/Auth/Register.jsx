@@ -14,8 +14,9 @@ const registerSchema = z.object({
     name: z.string().min(1, "Name is required"),
     email: z.string().email("Invalid email address"),
     password: z.string().min(6, "Password must be at least 6 characters"),
-    phone: z.string().regex(/^\d{10}$/, "Phone number must be 10 digits"),
-    address: z.string().min(1, "Address is required")
+    phone: z.string().regex(/^\d{11}$/, "Phone number must be 11 digits"),
+    address: z.string().min(1, "Address is required"),
+    answer: z.string().min(6, "Answer must be at least 6 characters")
 });
 
 const Register = () => {
@@ -31,11 +32,8 @@ const Register = () => {
         // console.log(data);
         console.log('REGISTER_URL:', import.meta.env.VITE_REGISTER_URL);
     
-        const { name, email, password, address, phone } = data;
-        console.log(data)
-        console.log()
         try {
-            const res = await axios.post(`${import.meta.env.VITE_REGISTER_URL}/api/v1/auth/register`, { name, email, password, address, phone });
+            const res = await axios.post(`${import.meta.env.VITE_REGISTER_URL}/api/v1/auth/register`, { name, email, password, address, phone, answer });
             if (res.data.success) {
                 toast.success(res.data.message);
                 navigate("/login");
@@ -110,6 +108,17 @@ const Register = () => {
                             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-400"
                         />
                         {errors.address && <p className="text-red-500 text-sm">{errors.address.message}</p>}
+                    </div>
+
+                    {/* Answer field */}
+                    <div className="mb-4">
+                        <input
+                            type="text"
+                            placeholder="What is your favourite carton name "
+                            {...register("answer")}
+                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-400"
+                        />
+                        {errors.answer && <p className="text-red-500 text-sm">{errors.answer.message}</p>}
                     </div>
 
 
