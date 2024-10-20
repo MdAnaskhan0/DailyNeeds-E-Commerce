@@ -25,8 +25,9 @@ function App() {
       <Route path="/Contact" element={<Contact />} />
       <Route path="/PageNotFound" element={<PageNotFound />} />
       <Route path="/Cart" element={<Cart />} />
-      <Route path="privacy-policy" element={<Policy />} />
-      <Route path="Category" element={<PageNotFound />} />
+      <Route path="/privacy-policy" element={<Policy />} />
+      <Route path="/Category" element={<PageNotFound />} />
+      <Route path='*' element={<PageNotFound />} />
 
 
     </Routes>
