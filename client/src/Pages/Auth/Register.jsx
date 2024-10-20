@@ -30,9 +30,8 @@ const Register = () => {
     // onSubmit function to handle form submission
     const onSubmit = async (data) => {
         // console.log(data);
-        // console.log('REGISTER_URL:', import.meta.env.VITE_REGISTER_URL);
+        console.log('REGISTER_URL:', import.meta.env.VITE_REGISTER_URL);
     
-        const { name, email, password, address, phone, answer } = data;
         try {
             const res = await axios.post(`${import.meta.env.VITE_REGISTER_URL}/api/v1/auth/register`, { name, email, password, address, phone, answer });
             if (res.data.success) {
