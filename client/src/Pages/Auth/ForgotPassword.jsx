@@ -11,14 +11,13 @@ import axios from 'axios'
 // Zod schema for login validation
 const forgotPasswordSchema = z.object({
     email: z.string().email("Please enter a valid email address"),
-    newPassword: z.string().min(6, "New Password must be at least 6 characters long"),
+    newpassword: z.string("New Password must be at least 6 characters long"),
     answer: z.string().min(6, "Answer must be at least 6 characters long")
 });
 
 
 
 const ForgotPassword = () => {
-
     // Use useForm hook with zodResolver
     const { register, handleSubmit, formState: { errors } } = useForm({
         resolver: zodResolver(forgotPasswordSchema)
@@ -26,13 +25,14 @@ const ForgotPassword = () => {
 
     const navigate = useNavigate();
 
-    // Submit handler
+    // ForgotPassword handler
     const handleForgotPassword = async (data) => {
-        // console.log('Form Submitted:', data);
-        const { email, newPassword, answer } = data;
+        console.log('Form Submitted:', data);
+        console.log("Forgot Password URL: " + `${import.meta.env.VITE_REGISTER_URL}/api/v1/auth/forgot-password`)
+        const { email, answer, newpassword} = data;
 
         try {
-            const res = await axios.post(`${import.meta.env.VITE_REGISTER_URL}/api/v1/auth/forgot-password`, { email, newPassword, answer });
+            const res = await axios.post(`${import.meta.env.VITE_REGISTER_URL}/api/v1/auth/forgot-password`, { email, answer, newpassword });
             if (res && res.data.success) {
                 toast.success("Password Change Successfully");
                 navigate('/login');
@@ -63,26 +63,26 @@ const ForgotPassword = () => {
                         {errors.email && <p className="text-red-500 text-sm">{errors.email.message}</p>}
                     </div>
 
-                    {/* Password Input */}
-                    <div className="mb-4">
-                        <input
-                            type="password"
-                            placeholder="Enter Your Password"
-                            {...register("newPassword")}
-                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-400"
-                        />
-                        {errors.newPassword && <p className="text-red-500 text-sm">{errors.newPassword.message}</p>}
-                    </div>
-
                     {/* Answer Input */}
                     <div className="mb-4">
                         <input
                             type="text"
                             placeholder="Enter your favourite carton name"
-                            {...register("newPassword")}
+                            {...register("answer")}
                             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-400"
                         />
-                        {errors.newPassword && <p className="text-red-500 text-sm">{errors.newPassword.message}</p>}
+                        {errors.answer && <p className="text-red-500 text-sm">{errors.answer.message}</p>}
+                    </div>
+
+                    {/* Password Input */}
+                    <div className="mb-4">
+                        <input
+                            type="newpassword"
+                            placeholder="Enter Your Password"
+                            {...register("newpassword")}
+                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-400"
+                        />
+                        {errors.newpassword && <p className="text-red-500 text-sm">{errors.newpassword.message}</p>}
                     </div>
 
                     {/* Submit Button */}
@@ -95,7 +95,7 @@ const ForgotPassword = () => {
 
 
                     <div className='flex justify-between'>
-                        {/* Forgot Button */}
+                        {/* Login Button */}
                         <p onClick={() => { navigate('/login') }} className='pt-5 cursor-pointer text-gray-400 hover:text-gray-700'>Login</p>
 
                         {/* Create new account */}
