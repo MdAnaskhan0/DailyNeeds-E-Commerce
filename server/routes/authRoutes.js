@@ -6,6 +6,7 @@ const {
   registerController,
   loginController,
   testcontroller,
+  forgotPasswordController
 } = require("../controllers/authController");
 //import middlware
 const {requireSignin,isadmin}=require("../middleware/authMiddleware")
@@ -22,5 +23,9 @@ router.get("/test",requireSignin,isadmin,testcontroller);
 router.get("/user-auth",requireSignin,(req,res)=>{
   res.status(200).send({ok:true})
 })
+
+//forgot password
+
+router.post("/forgot-password",forgotPasswordController);
 
 module.exports = router;
