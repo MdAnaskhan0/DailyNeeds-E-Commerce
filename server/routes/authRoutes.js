@@ -19,4 +19,8 @@ router.post("/login", loginController);
 
 router.get("/test",requireSignin,isadmin,testcontroller);
 
+router.get("/user-auth",requireSignin,(req,res)=>{
+  res.status(200).send({ok:true})
+})
+
 module.exports = router;
