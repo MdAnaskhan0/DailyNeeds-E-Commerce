@@ -16,7 +16,7 @@ const registerSchema = z.object({
     password: z.string().min(6, "Password must be at least 6 characters"),
     phone: z.string().regex(/^\d{11}$/, "Phone number must be 11 digits"),
     address: z.string().min(1, "Address is required"),
-    answer: z.string().min(6, "Answer must be at least 6 characters")
+    answer: z.string("Answer must be at least 3 characters")
 });
 
 const Register = () => {
@@ -29,11 +29,13 @@ const Register = () => {
 
     // onSubmit function to handle form submission
     const onSubmit = async (data) => {
-        // console.log(data);
+        console.log(data);
         console.log('REGISTER_URL:', import.meta.env.VITE_REGISTER_URL);
-    
+
+        const { name, email, password, phone, address, answer } = data;
+
         try {
-            const res = await axios.post(`${import.meta.env.VITE_REGISTER_URL}/api/v1/auth/register`, { name, email, password, address, phone, answer });
+            const res = await axios.post(`${import.meta.env.VITE_REGISTER_URL}/api/v1/auth/register`, { name, email, password, phone, address, answer });
             if (res.data.success) {
                 toast.success(res.data.message);
                 navigate("/login");
@@ -45,7 +47,7 @@ const Register = () => {
             toast.error("Something went wrong");
         }
     };
-    
+
 
     const [message, setMessage] = useState("");
 
@@ -91,7 +93,7 @@ const Register = () => {
                     {/* Phone Field */}
                     <div className="mb-4">
                         <input
-                            type="tel"
+                            type="text"
                             placeholder="Enter Your Phone"
                             {...register("phone")}
                             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-400"
@@ -130,6 +132,11 @@ const Register = () => {
                     >
                         Submit
                     </button>
+
+                    <div className='flex justify-between'>
+                        {/* Login Button */}
+                        <p onClick={() => { navigate('/login') }} className='pt-5 cursor-pointer text-gray-400'>Already have an account ? <span className='text-blue-600 cursor-pointer hover:cursor-pointer hover:text-blue-400'>Login</span></p>
+                    </div>
                 </form>
             </div>
         </Layout>
