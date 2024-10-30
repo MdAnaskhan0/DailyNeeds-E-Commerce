@@ -19,11 +19,11 @@ function App() {
   return (
     <Routes>
       <Route path="/" element={<HomePage />} />
-      <Route path="/Dashboard" element={<PrivateRoute />}>  {/* User Dashboard Route */}
-        <Route path="" element={<Dashboard />} />
+      <Route path="/dashboard/user" element={<PrivateRoute />}>
+        <Route index element={<Dashboard />} />
       </Route>
-      <Route path="/Admin" element={<AdminRoute />}>
-        <Route path="" element={<AdminDashBoard />}/>
+      <Route path="/dashboard/admin" element={<AdminRoute />}>
+        <Route index element={<AdminDashBoard />} />
       </Route>
       <Route path="/Login" element={<Login />} />
       <Route path="/Forgot-password" element={<ForgotPassword />} />

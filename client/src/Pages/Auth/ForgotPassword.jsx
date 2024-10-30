@@ -12,7 +12,7 @@ import axios from 'axios'
 const forgotPasswordSchema = z.object({
     email: z.string().email("Please enter a valid email address"),
     newpassword: z.string("New Password must be at least 6 characters long"),
-    answer: z.string().min(6, "Answer must be at least 6 characters long")
+    answer: z.string("Answer must be at least 6 characters long")
 });
 
 
@@ -77,7 +77,7 @@ const ForgotPassword = () => {
                     {/* Password Input */}
                     <div className="mb-4">
                         <input
-                            type="newpassword"
+                            type="password"
                             placeholder="Enter Your Password"
                             {...register("newpassword")}
                             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-400"
