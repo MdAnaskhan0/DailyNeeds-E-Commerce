@@ -67,7 +67,7 @@ const Navbar = () => {
                                         onClick={toggleDropdown}
                                         className="text-gray-600 text-lg font-semibold hover:text-black focus:outline-none"
                                     >
-                                        Menu ▼
+                                        {auth?.user?.name}
                                     </button>
 
                                     {/* Dropdown Content */}
@@ -78,7 +78,7 @@ const Navbar = () => {
                                         >
                                             <li>
                                                 <NavLink
-                                                    to="/dashboard"
+                                                    to={`/dashboard/${auth?.user?.role === 1 ? 'admin' : 'user'}`}
                                                     className="block px-4 py-2 text-gray-600 text-lg font-semibold hover:bg-gray-100"
                                                     onClick={() => setIsOpen(false)}
                                                 >
@@ -148,7 +148,7 @@ const Navbar = () => {
                             <li>
                                 <NavLink to={`/dashboard/${auth?.user?.role === 1 ? 'admin' : 'user'}`} className="text-gray-600 text-lg font-semibold hover:text-black">
                                     Dashboard
-                                </NavLink>  
+                                </NavLink>
                             </li>
 
                             <li>

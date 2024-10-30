@@ -11,8 +11,8 @@ export default function AdminRoute() {
     useEffect(() => {
         const authCheck = async () => {
             const res = await axios.get("/api/v1/auth/admin-auth");
-            console.log(res)
-            if (res.status == 200) {
+            // console.log(res)
+            if (res.status == 200 && auth?.user?.role === 1) {
                 setOK(true);
             } else {
                 setOK(false);
@@ -23,5 +23,5 @@ export default function AdminRoute() {
 
 
 
-    return ok ? <Outlet /> : <Spinner />;
+    return ok ? <Outlet /> : <Spinner path=""/>;
 }
