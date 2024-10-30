@@ -12,31 +12,38 @@ import PrivateRoute from "./Components/Routes/Private";
 import ForgotPassword from "./Pages/Auth/ForgotPassword";
 import AdminDashBoard from "./Pages/Admin/AdminDashBoard";
 import AdminRoute from "./Components/Routes/AdminRoute";
-
-
+import AllProducts from "./Pages/Admin/AllProducts";
+import CreateCategory from "./Pages/Admin/CreateCategory";
+import AddProduct from "./Pages/Admin/AddProduct";
+import AllUsers from "./Pages/Admin/AllUsers";
+import AllOrders from "./Pages/Admin/AllOrders";
 
 function App() {
   return (
     <Routes>
       <Route path="/" element={<HomePage />} />
-      <Route path="/dashboard/user" element={<PrivateRoute />}>
-        <Route index element={<Dashboard />} />
+      {/* User Dashboard */}
+      <Route path="/dashboard" element={<PrivateRoute />}>
+        <Route path="user" element={<Dashboard />} />
       </Route>
+      {/* Admin Dashboard */}
       <Route path="/dashboard/admin" element={<AdminRoute />}>
-        <Route index element={<AdminDashBoard />} />
+        <Route index element={<AdminDashBoard />} /> 
+        <Route path="all-products" element={<AllProducts />} />
+        <Route path="create-category" element={<CreateCategory />} />
+        <Route path="add-product" element={<AddProduct />} />
+        <Route path="all-user" element={<AllUsers />} />
+        <Route path="all-orders" element={<AllOrders />} />
       </Route>
-      <Route path="/Login" element={<Login />} />
-      <Route path="/Forgot-password" element={<ForgotPassword />} />
-      <Route path="/Register" element={<Register />} />
-      <Route path="/About" element={<About />} />
-      <Route path="/Contact" element={<Contact />} />
-      <Route path="/PageNotFound" element={<PageNotFound />} />
-      <Route path="/Cart" element={<Cart />} />
+      <Route path="/login" element={<Login />} />
+      <Route path="/forgot-password" element={<ForgotPassword />} />
+      <Route path="/register" element={<Register />} />
+      <Route path="/about" element={<About />} />
+      <Route path="/contact" element={<Contact />} />
+      <Route path="/cart" element={<Cart />} />
       <Route path="/privacy-policy" element={<Policy />} />
-      <Route path="/Category" element={<PageNotFound />} />
-      <Route path='*' element={<PageNotFound />} />
-
-
+      <Route path="/category" element={<PageNotFound />} />
+      <Route path="*" element={<PageNotFound />} />
     </Routes>
   );
 }

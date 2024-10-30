@@ -1,12 +1,8 @@
 import React from 'react'
 import Layout from '../../Components/Layout/Layout'
 import AdminMenu from '../../Components/Layout/AdminMenu'
-import { useAuth } from '../../Context/Auth'
 
-const AdminDashBoard = () => {
-
-    const [auth] = useAuth();
-
+const AllProducts = () => {
     return (
         <Layout>
             <div className="flex min-h-screen bg-gray-100">
@@ -23,7 +19,7 @@ const AdminDashBoard = () => {
                 {/* Content Area */}
                 <div className="flex-grow p-6">
                     <div className="bg-white shadow rounded-lg p-8">
-                        <h1>{auth?.user?.name}</h1>
+                        All Products
                     </div>
                 </div>
             </div>
@@ -31,4 +27,4 @@ const AdminDashBoard = () => {
     )
 }
 
-export default AdminDashBoard
+export default AllProducts
