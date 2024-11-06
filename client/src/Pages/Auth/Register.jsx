@@ -30,7 +30,7 @@ const Register = () => {
     // onSubmit function to handle form submission
     const onSubmit = async (data) => {
         console.log(data);
-        console.log('REGISTER_URL:', import.meta.env.VITE_REGISTER_URL);
+        // console.log('REGISTER_URL:', import.meta.env.VITE_REGISTER_URL);
 
         const { name, email, password, phone, address, answer } = data;
 

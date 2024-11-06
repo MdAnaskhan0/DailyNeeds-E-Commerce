@@ -4,7 +4,7 @@ const morgan = require("morgan");
 const connectDB = require("./config/db");
 const authRoutes = require("./routes/authRoutes");
 const cors = require("cors");
-const catagoryRoutes = require("./routes/catagoryRoutes");
+const categoryRoutes = require("./routes/categoryRoutes");
 const productRoutes = require("./routes/productRoutes");
 // Configure dotenv
 dotenv.config();
@@ -22,7 +22,7 @@ app.use(express.json());
 // Routes
 app.use("/api/v1/auth", authRoutes);
 
-app.use("/api/v1/catagory", catagoryRoutes);
+app.use("/api/v1/category", categoryRoutes);
 app.use("/api/v1/products",productRoutes)
 // Test route
 app.get("/", (req, res) => {
