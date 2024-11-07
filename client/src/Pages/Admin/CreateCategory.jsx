@@ -147,11 +147,13 @@ const CreateCategory = () => {
                 {/* Content Area */}
                 <div className="flex-grow p-6">
                     <div className="bg-white shadow rounded-lg p-6">
-                        <h2 className="text-2xl font-semibold mb-4 text-gray-700">Manage Categories</h2>
+                        <div>
+                            <h2 className="text-2xl font-semibold mb-4 text-gray-700">Manage Categories</h2>
 
-                        {/* Category Form */}
-                        <div className='mb-4'>
-                            <CategoryForm handleSubmit={handleSubmit} value={name} setValue={setName} />
+                            {/* Category Form */}
+                            <div className='mb-4'>
+                                <CategoryForm handleSubmit={handleSubmit} value={name} setValue={setName} className="w-full px-4 py-4 mb-4 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-gray-300" />
+                            </div>
                         </div>
 
                         {/* React Table */}
