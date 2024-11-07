@@ -3,8 +3,9 @@ import Layout from '../../Components/Layout/Layout';
 import AdminMenu from '../../Components/Layout/AdminMenu';
 import toast from 'react-hot-toast';
 import axios from 'axios';
-import {Modal} from 'antd';
+import { Modal } from 'antd';
 import CategoryForm from '../../Components/Form/categoryForm';
+import { useTable, useGlobalFilter } from 'react-table';
 
 const CreateCategory = () => {
     const [categories, setCategories] = useState([]);
@@ -23,11 +24,12 @@ const CreateCategory = () => {
             if (data.success) {
                 toast.success(data.message);
                 getAllCategory();
+                setVisible(false);
             } else {
                 toast.error(data.message);
             }
         } catch (error) {
-            console.log(error);
+            console.error(error);
             toast.error("Something went wrong");
         }
     };
@@ -37,13 +39,13 @@ const CreateCategory = () => {
         try {
             const { data } = await axios.delete(`${import.meta.env.VITE_REGISTER_URL}/api/v1/category/delete-category/${id}`);
             if (data.success) {
-                toast.success(`${name} deleted successfully`);
+                toast.success("Category deleted successfully");
                 getAllCategory();
             } else {
                 toast.error(data.message);
             }
         } catch (error) {
-            console.log(error);
+            console.error(error);
             toast.error("Something went wrong");
         }
     };
@@ -58,11 +60,12 @@ const CreateCategory = () => {
             if (data?.success) {
                 toast.success(data.message);
                 getAllCategory();
+                setName("");
             } else {
                 toast.error(data.message);
             }
         } catch (error) {
-            console.log(error);
+            console.error(error);
             toast.error("Something went wrong");
         }
     };
@@ -77,7 +80,7 @@ const CreateCategory = () => {
                 toast.error("API fetching error");
             }
         } catch (error) {
-            console.log(error);
+            console.error(error);
             toast.error("Something went wrong in getting category");
         }
     };
@@ -86,11 +89,53 @@ const CreateCategory = () => {
         getAllCategory();
     }, []);
 
+    // React Table
+    const columns = React.useMemo(
+        () => [
+            {
+                Header: 'Category Name',
+                accessor: 'name',
+            },
+            {
+                Header: 'Actions',
+                Cell: ({ row }) => (
+                    <div className="flex justify-left">
+                        <button
+                            className="bg-gray-500 text-white px-4 py-1 rounded hover:bg-gray-600 mx-2"
+                            onClick={() => {
+                                setVisible(true);
+                                setSelected(row.original);
+                                setUpdatedName(row.original.name);
+                            }}
+                        >
+                            Edit
+                        </button>
+                        <button
+                            className="bg-red-500 text-white px-4 py-1 rounded hover:bg-red-600 mx-2"
+                            onClick={() => handleDelete(row.original._id)}
+                        >
+                            Delete
+                        </button>
+                    </div>
+                ),
+            },
+        ],
+        []
+    );
+
+    const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow, setGlobalFilter } = useTable(
+        {
+            columns,
+            data: categories,
+        },
+        useGlobalFilter
+    );
+
     return (
         <Layout>
-            <div className="flex min-h-screen bg-gray-100">
+            <div className="flex flex-col lg:flex-row min-h-screen bg-gray-100">
                 {/* Admin Sidebar */}
-                <div className="w-64 bg-gray-800 text-white flex flex-col">
+                <div className="w-full lg:w-64 bg-gray-800 text-white flex flex-col">
                     <div className="p-6 text-2xl font-bold border-b border-gray-700">
                         Admin Dashboard
                     </div>
@@ -101,7 +146,7 @@ const CreateCategory = () => {
 
                 {/* Content Area */}
                 <div className="flex-grow p-6">
-                    <div className="bg-white shadow rounded-lg p-8">
+                    <div className="bg-white shadow rounded-lg p-6">
                         <h2 className="text-2xl font-semibold mb-4 text-gray-700">Manage Categories</h2>
 
                         {/* Category Form */}
@@ -109,44 +154,48 @@ const CreateCategory = () => {
                             <CategoryForm handleSubmit={handleSubmit} value={name} setValue={setName} />
                         </div>
 
-                        <div>
-                            <table className="min-w-full table-auto  border-none shadow-[0_3px_10px_rgb(0,0,0,0.2)] rounded-lg">
-                                <thead className="bg-gray-800 text-white border-none rounded-lg">
-                                    <tr>
-                                        <th className="px-6 py-3 text-center text-xl font-medium">Category Name</th>
-                                        <th className="px-6 py-3 text-center text-xl font-medium">Actions</th>
-                                    </tr>
+                        {/* React Table */}
+                        <div className='lg:max-w-[750px]'>
+                            <input
+                                type="text"
+                                className="w-full px-4 py-4 mb-4 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-gray-300"
+                                placeholder="Search categories..."
+                                onChange={(e) => setGlobalFilter(e.target.value)}
+                            />
+                            <table {...getTableProps()} className="w-full table-auto border border-gray-200 rounded mb-5">
+                                <thead className="bg-gray-700 text-white">
+                                    {headerGroups.map((headerGroup) => (
+                                        <tr {...headerGroup.getHeaderGroupProps()}>
+                                            {headerGroup.headers.map((column) => (
+                                                <th
+                                                    {...column.getHeaderProps()}
+                                                    className="px-4 py-2 text-left"
+                                                >
+                                                    {column.render('Header')}
+                                                </th>
+                                            ))}
+                                        </tr>
+                                    ))}
                                 </thead>
-                                <tbody className="divide-y divide-gray-200">
-                                    {categories &&
-                                        categories.map((category) => (
-                                            <tr key={category._id} className="hover:bg-gray-50">
-                                                <td className="px-6 py-4 text-center text-[18px] font-medium text-gray-900">{category.name}</td>
-                                                <td className="px-6 py-4 text-center text-[18px] font-medium text-gray-500">
-                                                    <button
-                                                        className="text-white text-sm font-semibold rounded-sm hover:bg-slate-600 hover:text-white bg-slate-500 px-5 py-2 mx-4"
-                                                        onClick={() =>{
-                                                            setVisible(true);
-                                                            setSelected(category);
-                                                            setUpdatedName(category.name);
-                                                        } }
-                                                    >
-                                                        Edit
-                                                    </button>
-                                                    <button
-                                                        className="text-white text-sm font-semibold rounded-sm hover:bg-red-600 hover:text-white bg-slate-500 px-5 py-2 mx-4"
-                                                        onClick={() => handleDelete(category._id)}
-                                                    >
-                                                        Delete
-                                                    </button>
-                                                </td>
+                                <tbody {...getTableBodyProps()} className="divide-y divide-gray-200">
+                                    {rows.map((row) => {
+                                        prepareRow(row);
+                                        return (
+                                            <tr {...row.getRowProps()} className="hover:bg-gray-100">
+                                                {row.cells.map((cell) => (
+                                                    <td {...cell.getCellProps()} className="px-4 py-2 text-gray-800">
+                                                        {cell.render('Cell')}
+                                                    </td>
+                                                ))}
                                             </tr>
-                                        ))}
+                                        );
+                                    })}
                                 </tbody>
                             </table>
                         </div>
-                        <Modal onCancel={() => setVisible(false)} footer={null} visible={visible} >
-                            <CategoryForm value={updatedName} setValue={setUpdatedName} handleSubmit={handleUpdate}/>
+
+                        <Modal onCancel={() => setVisible(false)} footer={null} visible={visible}>
+                            <CategoryForm value={updatedName} setValue={setUpdatedName} handleSubmit={handleUpdate} />
                         </Modal>
                     </div>
                 </div>

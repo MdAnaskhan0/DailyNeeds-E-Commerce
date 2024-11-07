@@ -4,10 +4,12 @@ import AdminMenu from '../../Components/Layout/AdminMenu';
 import { toast } from 'react-hot-toast';
 import axios from 'axios';
 import { Select } from 'antd';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 const { Option } = Select;
 
-const AddProduct = () => {
+
+const UpdateProduct = () => {
+
     const navigate = useNavigate();
     const [categories, setCategories] = useState([]);
     const [photo, setPhoto] = useState(null);
@@ -17,6 +19,38 @@ const AddProduct = () => {
     const [quantity, setQuantity] = useState("");
     const [shipping, setShipping] = useState(null);
     const [category, setCategory] = useState("");
+    const prams = useParams();
+    const [id, setId] = useState();
+
+    // get single product function
+    const getSingleProduct = async () => {
+        try {
+            const { data } = await axios.get(`${import.meta.env.VITE_REGISTER_URL}/api/v1/products/single-product/${prams.slug}`);
+
+            if (data?.success) {
+                setName(data.singleproduct.name);
+                setId(data.singleproduct._id);
+                setDescription(data.singleproduct.description);
+                setPrice(data.singleproduct.price);
+                setQuantity(data.singleproduct.quantity);
+                setShipping(data.singleproduct.shipping);
+                setCategory(data.singleproduct.category);
+                setPhoto(data.singleproduct.photo?.data || null);
+            } else {
+                toast.error("API fetching error");
+            }
+        } catch (error) {
+            console.log("Error fetching product:", error);
+            toast.error("Something went wrong in getting single product");
+        }
+    };
+
+    // Run effect when `prams.slug` changes
+    useEffect(() => {
+        if (prams.slug) {
+            getSingleProduct();
+        }
+    }, [prams.slug]);
 
     // Get all categories
     const getAllCategory = async () => {
@@ -37,23 +71,32 @@ const AddProduct = () => {
         getAllCategory();
     }, []);
 
-    // Create product function
-    const handleCreate = async (e) => {
+    // Update product function
+    const handleUpdate = async (e) => {
         e.preventDefault();
+
+        // Check if the required fields are filled
+        if (!name || !description || !price || !quantity || !category) {
+            toast.error("Please fill all required fields.");
+            return;
+        }
+
         try {
             const formData = new FormData();
             formData.append("name", name);
             formData.append("description", description);
             formData.append("price", price);
-            formData.append("category", category);
             formData.append("quantity", quantity);
-            formData.append("shipping", shipping);
-            if (photo) {
+            formData.append("shipping", shipping ? "1" : "0");
+            formData.append("category", category);
+
+            // If a new photo is selected, append it to the formData
+            if (photo instanceof File) {
                 formData.append("photo", photo);
             }
 
-            const { data } = await axios.post(
-                `${import.meta.env.VITE_REGISTER_URL}/api/v1/products/create-product`,
+            const response = await axios.put(
+                `${import.meta.env.VITE_REGISTER_URL}/api/v1/products/update-product/${id}`,
                 formData,
                 {
                     headers: {
@@ -62,17 +105,18 @@ const AddProduct = () => {
                 }
             );
 
-            if (data?.success) {
-                toast.success(`Product ${name} created successfully`);
-                navigate("/dashboard/admin/all-products");
+            if (response.data?.success) {
+                toast.success("Product updated successfully");
+                navigate("/dashboard/admin/all-products"); // Redirect to products list or a different page after update
             } else {
-                toast.error(data?.message);
+                toast.error("Failed to update product");
             }
         } catch (error) {
-            console.error("Error creating product:", error);
-            toast.error("Something went wrong");
+            console.error("Error updating product:", error);
+            toast.error("Something went wrong during the update");
         }
     };
+
 
     return (
         <Layout>
@@ -91,12 +135,13 @@ const AddProduct = () => {
                 <div className="flex-grow p-6">
                     <div className="bg-white shadow rounded-lg p-8 md:p-6 sm:p-4">
                         <div className="lg:max-w-[600px]">
-                            <h1 className="text-2xl font-bold mb-4">Add New Product</h1>
+                            <h1 className="text-2xl font-bold mb-4">Update The Product</h1>
                             <div>
                                 <Select
                                     bordered={false}
                                     showSearch
                                     onChange={(value) => setCategory(value)}
+                                    value={category.name}
                                     size='large'
                                     className="form-select mb-4 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500"
                                     placeholder="Select Category"
@@ -123,10 +168,18 @@ const AddProduct = () => {
                                 </div>
 
                                 {/* Display uploaded image */}
-                                {photo && (
+                                {photo ? (
                                     <div className="text-center py-2 mb-4">
                                         <img
                                             src={URL.createObjectURL(photo)}
+                                            alt="upload image"
+                                            className="mx-auto h-48 w-48 object-cover"
+                                        />
+                                    </div>
+                                ) : (
+                                    <div className="text-center py-2 mb-4">
+                                        <img
+                                            src={`${import.meta.env.VITE_REGISTER_URL}/api/v1/products/product-photo/${id}`}
                                             alt="upload image"
                                             className="mx-auto h-48 w-48 object-cover"
                                         />
@@ -184,6 +237,7 @@ const AddProduct = () => {
                                         <Select
                                             bordered={false}
                                             onChange={(value) => setShipping(value === "1")}
+                                            value={shipping ? "1" : "0"}
                                             showSearch
                                             size='large'
                                             placeholder="Select Shipping"
@@ -195,10 +249,10 @@ const AddProduct = () => {
                                     </div>
                                     <div className="mt-6 text-center">
                                         <button
-                                            onClick={handleCreate}
+                                            onClick={handleUpdate}
                                             className="bg-gray-600 text-white font-semibold py-2 px-4 rounded-md hover:bg-gray-700 focus:outline-none focus:ring-gray-500 focus:ring-offset-2"
                                         >
-                                            Add Product
+                                            Update Product
                                         </button>
                                     </div>
                                 </div>
@@ -208,7 +262,7 @@ const AddProduct = () => {
                 </div>
             </div>
         </Layout>
-    );
-};
+    )
+}
 
-export default AddProduct;
+export default UpdateProduct

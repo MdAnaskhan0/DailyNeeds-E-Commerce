@@ -5,9 +5,9 @@ import AdminMenu from '../../Components/Layout/AdminMenu'
 const AllOrders = () => {
     return (
         <Layout>
-            <div className="flex min-h-screen bg-gray-100">
+            <div className="flex flex-col lg:flex-row min-h-screen bg-gray-100">
                 {/* Admin Sidebar */}
-                <div className="w-64 bg-gray-800 text-white flex flex-col">
+                <div className="w-full lg:w-64 bg-gray-800 text-white flex flex-col">
                     <div className="p-6 text-2xl font-bold border-b border-gray-700">
                         Admin Dashboard
                     </div>
