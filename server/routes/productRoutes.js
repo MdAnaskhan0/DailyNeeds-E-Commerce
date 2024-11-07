@@ -23,7 +23,6 @@ router.post(
 );
 
 //update product
-
 router.put(
   "/update-product/:pid",
   requireSignin,
@@ -31,6 +30,7 @@ router.put(
   upload.single("photo"),
   updateProductController
 );
+
 //get product route
 router.get("/get-product", getProductController);
 

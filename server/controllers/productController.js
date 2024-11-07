@@ -14,11 +14,11 @@ const upload = multer({
 
 const createProductController = async (req, res) => {
   try {
-    const { name, slug, description, price, catagory, quantity, shipping } =
+    const { name, slug, description, price, category, quantity, shipping } =
       req.body;
     const photo = req.file;
 
-    //vailadtion
+    //validation
 
     let validationMessage = "";
 
@@ -36,7 +36,7 @@ const createProductController = async (req, res) => {
       case isNaN(price):
         validationMessage = "Price must be a number";
         break;
-      case !catagory:
+      case !category:
         validationMessage = "Category is required";
         break;
       case !quantity:
@@ -89,7 +89,7 @@ const getProductController = async (req, res) => {
   try {
     const products = await productModel
       .find({})
-      .populate("catagory")
+      .populate("category")
       .select("-photo")
       .sort({ createdAt: -1 }) // Sort by createdAt in descending order. Use 1 for ascending.
       .limit(10); // photo field excluded hoye jabe
@@ -116,18 +116,25 @@ const getSingleProduct = async (req, res) => {
     const singleproduct = await productModel
       .findOne({ slug: req.params.slug })
       .select("-photo")
-      .populate("catagory");
+      .populate("category");
+
+    if (!singleproduct) {
+      return res.status(404).send({
+        success: false,
+        message: "Product not found",
+      });
+    }
 
     res.status(200).send({
       success: true,
-      message: "single product get successfully",
-      singleproduct,
+      message: "Single product fetched successfully",
+      singleproduct, // Return singleproduct field
     });
   } catch (error) {
     console.log(error);
     res.status(500).send({
       success: false,
-      message: "Error in get  single product",
+      message: "Error fetching single product",
       error: error.message,
     });
   }
@@ -174,15 +181,14 @@ const deleteProductController = async (req, res) => {
   }
 };
 
-//update product controller
-
+// update product controller
 const updateProductController = async (req, res) => {
   try {
-    const { name, slug, description, price, catagory, quantity, shipping } =
+    const { name, slug, description, price, category, quantity, shipping } =
       req.body;
     const photo = req.file;
 
-    //vailadtion
+    //validation
 
     let validationMessage = "";
 
@@ -200,7 +206,7 @@ const updateProductController = async (req, res) => {
       case isNaN(price):
         validationMessage = "Price must be a number";
         break;
-      case !catagory:
+      case !category:
         validationMessage = "Category is required";
         break;
       case !quantity:
@@ -227,7 +233,7 @@ const updateProductController = async (req, res) => {
     const products = await productModel.findByIdAndUpdate(req.params.pid, {
       ...req.body,
       slug: slugify(name),
-    },{new:true});
+    }, { new: true });
 
     if (photo) {
       products.photo.data = photo.buffer;
@@ -249,6 +255,8 @@ const updateProductController = async (req, res) => {
     });
   }
 };
+
+
 
 module.exports = {
   createProductController,
