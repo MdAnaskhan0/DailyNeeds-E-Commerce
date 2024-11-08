@@ -68,35 +68,12 @@ const AllProducts = () => {
                         >
                             Edit
                         </Link>
-                        {/* You can add Edit and Delete actions here */}
-                        {/* <Link
-                            to={`/dashboard/admin/product/edit/${row.original.slug}`}
-                            className="text-green-500 hover:text-green-700"
-                        >
-                            Edit
-                        </Link>
-                        <button
-                            onClick={() => handleDelete(row.original._id)}
-                            className="text-red-500 hover:text-red-700"
-                        >
-                            Delete
-                        </button> */}
                     </div>
                 ),
             },
         ],
         []
     );
-
-    const handleDelete = async (productId) => {
-        try {
-            await axios.delete(`${import.meta.env.VITE_REGISTER_URL}/api/v1/products/${productId}`);
-            toast.success('Product deleted successfully');
-            getAllProducts(); 
-        } catch (error) {
-            toast.error('Failed to delete product');
-        }
-    };
 
     const {
         getTableProps,

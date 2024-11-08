@@ -90,7 +90,7 @@ const UpdateProduct = () => {
             formData.append("shipping", shipping ? "1" : "0");
             formData.append("category", category._id);
 
-            // If a new photo is selected, append it to the formData
+
             if (photo instanceof File) {
                 formData.append("photo", photo);
             }
@@ -116,6 +116,25 @@ const UpdateProduct = () => {
             toast.error("Something went wrong during the update");
         }
     };
+
+    // Delete product function
+    const handleDelete = async () => {
+        try {
+            let answer = window.confirm("Are you sure you want to delete this product?");
+            if (!answer) {
+                return;
+            }
+            const {data} = await axios.delete(`${import.meta.env.VITE_REGISTER_URL}/api/v1/products/product-delete/${id}`);
+
+            if (data?.success) {
+                toast.success("Product deleted successfully");
+                navigate("/dashboard/admin/all-products");
+            }
+        } catch (error) {
+            console.error("Error deleting product:", error);
+            toast.error("Something went wrong during the delete");
+        }
+    }
 
 
     return (
@@ -247,13 +266,20 @@ const UpdateProduct = () => {
                                             <Option value="0">No</Option>
                                         </Select>
                                     </div>
-                                    <div className="mt-6 text-center">
+                                    <div className="mt-6 text-left flex flex-row gap-5">
                                         <button
                                             onClick={handleUpdate}
                                             className="bg-gray-600 text-white font-semibold py-2 px-4 rounded-md hover:bg-gray-700 focus:outline-none focus:ring-gray-500 focus:ring-offset-2"
                                         >
                                             Update Product
                                         </button>
+
+                                        <button  
+                                        onClick={handleDelete}
+                                        className="bg-gray-600 text-white font-semibold py-2 px-4 rounded-md hover:bg-red-700 focus:outline-none focus:red-gray-500 focus:ring-offset-2">
+                                            Delete Product
+                                        </button>
+
                                     </div>
                                 </div>
                             </div>
