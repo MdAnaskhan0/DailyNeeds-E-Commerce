@@ -88,7 +88,7 @@ const UpdateProduct = () => {
             formData.append("price", price);
             formData.append("quantity", quantity);
             formData.append("shipping", shipping ? "1" : "0");
-            formData.append("category", category);
+            formData.append("category", category._id);
 
             // If a new photo is selected, append it to the formData
             if (photo instanceof File) {
@@ -107,7 +107,7 @@ const UpdateProduct = () => {
 
             if (response.data?.success) {
                 toast.success("Product updated successfully");
-                navigate("/dashboard/admin/all-products"); // Redirect to products list or a different page after update
+                navigate("/dashboard/admin/all-products");
             } else {
                 toast.error("Failed to update product");
             }

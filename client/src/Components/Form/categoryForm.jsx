@@ -13,14 +13,14 @@ const CategoryForm = ({ handleSubmit, value, setValue }) => {
                         value={value}
                         onChange={(e) => setValue(e.target.value)}
                         required
-                        className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                        className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-gray-300 focus:border-gray-300"
                     />
                 </div>
 
                 {/* Submit Button */}
                 <button
                     type="submit"
-                    className="w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 transition-colors"
+                    className="w-full bg-gray-500 text-white py-2 rounded-md hover:bg-gray-600 transition-colors"
                 >
                     Submit
                 </button>
