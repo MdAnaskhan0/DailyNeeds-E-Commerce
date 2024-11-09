@@ -25,7 +25,7 @@ const HeroSection = () => {
     };
 
     return (
-        <div className="relative h-[50vh] overflow-hidden rounded-lg border-none">
+        <div className="relative h-[50vh] w-full overflow-hidden rounded-lg border-none">
             {images.map((url, index) => (
                 <div
                     key={index}

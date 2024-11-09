@@ -87,17 +87,25 @@ const createProductController = async (req, res) => {
 
 const getProductController = async (req, res) => {
   try {
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+    const skip = (page - 1) * limit;
     const products = await productModel
       .find({})
       .populate("category")
       .select("-photo")
       .sort({ createdAt: -1 }) // Sort by createdAt in descending order. Use 1 for ascending.
-      .limit(10); // photo field excluded hoye jabe
+      .skip(skip)
+      .limit(limit) // Apply pagination
+
+      const total = await productModel.countDocuments();
+
 
     res.status(200).send({
       success: true,
       message: " all product get successfully",
       products,
+      total,
     });
   } catch (error) {
     console.log(error);
