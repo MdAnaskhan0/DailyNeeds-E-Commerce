@@ -130,7 +130,7 @@ const HomePage = () => {
                                     </div>
                                     <div className="flex-grow pt-5">
                                         <h5 className="text-lg font-bold mb-2">{p.name}</h5>
-                                        <p className="text-gray-600 text-sm mb-2 line-clamp-2">{p.description}</p>
+                                        <p className="text-gray-600 text-sm mb-2 line-clamp-2">{p.description.substring(0, 25)}...</p>
                                         <div className='flex gap-1'>
                                             <div className='flex text-yellow-500'>
                                                 <FaStar />
