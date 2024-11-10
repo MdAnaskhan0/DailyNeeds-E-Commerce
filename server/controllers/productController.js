@@ -265,6 +265,37 @@ const updateProductController = async (req, res) => {
 };
 
 
+//product filter 
+
+const productFilterController = async (req, res) => {
+
+try {
+  
+  const { checked, radio } = req.body;
+  let args={}
+  if(checked.length>0){
+    args.catagory=checked;
+  }
+  if(radio.length){
+    args.price={$gte:radio[0],$lte:radio[1]};
+  }
+  const filterproduct=await productModel.find(args);
+
+  res.status(200).send({
+    success: true,
+    message: "product filter successfully",
+    filterproduct
+  })
+} catch (error) {
+  res.status(500).send({
+    success: false,
+    message: "Error in product filter",
+    error: error.message,
+    error
+  })
+}
+}
+
 
 module.exports = {
   createProductController,
@@ -274,4 +305,5 @@ module.exports = {
   productPhotoController,
   deleteProductController,
   updateProductController,
+  productFilterController
 };
