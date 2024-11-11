@@ -274,7 +274,7 @@ try {
   const { checked, radio } = req.body;
   let args={}
   if(checked.length>0){
-    args.catagory=checked;
+    args.category={$in:checked};
   }
   if(radio.length){
     args.price={$gte:radio[0],$lte:radio[1]};
