@@ -100,7 +100,7 @@ const HomePage = () => {
                 </div>
                 <div className="flex flex-col lg:flex-row gap-6">
                     {/* Filter Section */}
-                    <div className="w-full max-h-[70vh] lg:w-1/4 bg-white shadow-md rounded-lg p-6">
+                    <div className="w-full md:max-h-[80vh] lg:max-h-[70vh] lg:w-1/4 bg-white shadow-md rounded-lg p-6">
                         {/* Filter by Category */}
                         <div className="mb-6">
                             <h6 className="text-lg font-semibold mb-4">Filter By Category</h6>
