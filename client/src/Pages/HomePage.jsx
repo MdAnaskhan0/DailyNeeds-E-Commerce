@@ -5,12 +5,16 @@ import axios from "axios";
 import { Checkbox, Radio } from "antd";
 import { FaStar } from "react-icons/fa";
 import HeroSection from "../Components/HeroSection";
+import ProductPagination from "../Components/ProductPagination";
 
 const HomePage = () => {
     const [products, setProducts] = useState([]);
     const [categories, setCategories] = useState([]);
     const [checked, setChecked] = useState([]);
     const [radio, setRadio] = useState([]);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [totalProducts, setTotalProducts] = useState(0);
+    const itemsPerPage = 12;
 
     // Get all categories
     const getAllCategory = async () => {
@@ -32,13 +36,14 @@ const HomePage = () => {
         getAllCategory();
     }, []);
 
-    // Get all products
+    // Get all products with pagination
     const getAllProducts = async () => {
         try {
             const { data } = await axios.get(
-                `${import.meta.env.VITE_REGISTER_URL}/api/v1/products/get-product`
+                `${import.meta.env.VITE_REGISTER_URL}/api/v1/products/get-product?page=${currentPage}&limit=${itemsPerPage}`
             );
             setProducts(data?.products);
+            setTotalProducts(data?.total);
         } catch (error) {
             console.error("Error fetching products:", error);
         }
@@ -46,7 +51,7 @@ const HomePage = () => {
 
     useEffect(() => {
         if (!checked.length && !radio.length) getAllProducts();
-    }, [checked.length, radio.length]);
+    }, [checked.length, radio.length, currentPage]);
 
     // Filter by category
     const handleFilter = (value, id) => {
@@ -63,32 +68,32 @@ const HomePage = () => {
         try {
             const { data } = await axios.post(
                 `${import.meta.env.VITE_REGISTER_URL}/api/v1/products/product-filters`,
-                { checked, radio }
+                { checked, radio, page: currentPage, limit: itemsPerPage }
             );
             setProducts(data?.filterproduct);
+            setTotalProducts(data?.total);
         } catch (error) {
             console.error("Error in getFilteredProducts:", error);
         }
     };
 
-
     useEffect(() => {
         if (checked.length || radio.length) getFilteredProducts();
-    }, [checked, radio]);
+    }, [checked, radio, currentPage]);
+
+    const handlePageChange = (page) => {
+        setCurrentPage(page);
+    };
 
     return (
         <Layout>
             <div className="container mx-auto p-4">
                 {/* Hero Section */}
-                <div>
-                    <HeroSection />
-                </div>
+                <HeroSection />
 
                 {/* Full Product Section */}
                 <div id="product" className="text-2xl font-semibold my-20 text-center">
-                    <h1 className="text-3xl font-bold text-gray-800 mb-4">
-                        Our Products
-                    </h1>
+                    <h1 className="text-3xl font-bold text-gray-800 mb-4">Our Products</h1>
                     <p className="text-gray-600 font-medium tracking-wider text-lg">
                         Check & Get Your Desired Product!
                     </p>
@@ -129,6 +134,9 @@ const HomePage = () => {
                                 ))}
                             </Radio.Group>
                         </div>
+                        <div>
+                            <button className="mt-5 px-5 bg-gray-500 text-white py-2 rounded-md hover:bg-gray-600 transition-colors" onClick={() => { window.location.reload() }}>Clear Filter</button>
+                        </div>
                     </div>
 
                     {/* Products Section */}
@@ -140,8 +148,7 @@ const HomePage = () => {
                                     className="bg-white rounded-lg shadow-lg p-4 flex flex-col hover:scale-105 transition duration-300 ease-in-out"
                                 >
                                     <img
-                                        src={`${import.meta.env.VITE_REGISTER_URL
-                                            }/api/v1/products/product-photo/${p._id}`}
+                                        src={`${import.meta.env.VITE_REGISTER_URL}/api/v1/products/product-photo/${p._id}`}
                                         alt={p.name}
                                         className="h-40 w-full object-contain rounded-md mb-4"
                                     />
@@ -159,26 +166,32 @@ const HomePage = () => {
                                                 <FaStar />
                                                 <FaStar />
                                             </div>
-                                            <div>
-                                                <span className="text-gray-600 text-sm">
-                                                    Best Rating
-                                                </span>
-                                            </div>
+                                            <span className="ml-1 text-sm text-gray-500">Best Rating</span>
                                         </div>
-                                        <p className="text-Black-600 text-md font-semibold">
-                                            <span>৳</span> {p.price}
-                                        </p>
+
+                                        <div className="mt-4 flex gap-2">
+                                            <button className="flex-1 bg-gray-500 text-white text-sm py-2 rounded transform transition-transform duration-300 ease-in-out hover:scale-105 hover:bg-gradient-to-r hover:from-gray-600 hover:to-gray-800 shadow-md hover:shadow-lg">
+                                                Show Details
+                                            </button>
+                                            <button className="flex-1 bg-gradient-to-r from-gray-700 to-gray-900 text-white text-sm py-2 rounded transform transition-transform duration-300 ease-in-out hover:scale-105 hover:bg-gradient-to-r hover:from-gray-800 hover:to-gray-900 shadow-md hover:shadow-lg">
+                                                Add to Cart
+                                            </button>
+                                        </div>
                                     </div>
-                                    <div className="mt-4 flex gap-2">
-                                        <button className="flex-1 bg-gray-500 text-white text-sm py-2 rounded transform transition-transform duration-300 ease-in-out hover:scale-105 hover:bg-gradient-to-r hover:from-gray-600 hover:to-gray-800 shadow-md hover:shadow-lg">
-                                            Show Details
-                                        </button>
-                                        <button className="flex-1 bg-gradient-to-r from-gray-700 to-gray-900 text-white text-sm py-2 rounded transform transition-transform duration-300 ease-in-out hover:scale-105 hover:bg-gradient-to-r hover:from-gray-800 hover:to-gray-900 shadow-md hover:shadow-lg">
-                                            Add to Cart
-                                        </button>
+                                    <div className="flex justify-between items-center pt-3">
+                                        <span className="text-xl font-semibold text-gray-800">${p.price}</span>
                                     </div>
                                 </div>
                             ))}
+                        </div>
+
+                        {/* Pagination */}
+                        <div className="mt-6">
+                            <ProductPagination
+                                currentPage={currentPage}
+                                totalPages={Math.ceil(totalProducts / itemsPerPage)}
+                                onChangePage={handlePageChange}
+                            />
                         </div>
                     </div>
                 </div>
