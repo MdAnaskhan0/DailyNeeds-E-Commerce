@@ -95,15 +95,12 @@ const UpdateProduct = () => {
                 formData.append("photo", photo);
             }
 
-            const response = await axios.put(
-                `${import.meta.env.VITE_REGISTER_URL}/api/v1/products/update-product/${id}`,
-                formData,
-                {
-                    headers: {
-                        "Content-Type": "multipart/form-data",
-                    },
-                }
-            );
+            const response = await axios.put(`${import.meta.env.VITE_REGISTER_URL}/api/v1/products/update-product/${id}`, formData, {
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                },
+            });
+            console.log(response.data);
 
             if (response.data?.success) {
                 toast.success("Product updated successfully");

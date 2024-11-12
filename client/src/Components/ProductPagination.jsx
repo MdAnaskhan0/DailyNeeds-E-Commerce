@@ -36,27 +36,27 @@ const ProductPagination = ({ currentPage, totalPages, onChangePage }) => {
         <div className="pagination-container mt-4">
             <div className="pagination-buttons flex justify-left items-center space-x-2">
                 {/* Previous Button */}
-                <button
-                    className="mt-5 px-5 bg-gray-500 text-white py-2 rounded-md hover:bg-gray-600 transition-colors"
-                    onClick={() => handlePageChange(currentPage - 1)}
-                    disabled={currentPage === 1}
-                >
-                    Previous Page
-                </button>
-
-
-                <div className='text-lg flex space-x-2 pt-4 active:text-black'>
+                {currentPage > 1 && (
+                    <button
+                        className="mt-5 px-5 bg-gray-500 text-white py-2 rounded-md hover:bg-gray-600"
+                        onClick={() => handlePageChange(currentPage - 1)}
+                    >
+                        Previous
+                    </button>
+                )}
+                {/* Page Numbers */}
+                <div className='flex gap-2 text-lg font-medium mt-4 px-2 text-gray-700'>
                     {renderPageNumbers()}
                 </div>
-
-
-                <button
-                    className="mt-5 px-5 bg-gray-500 text-white py-2 rounded-md hover:bg-gray-600 transition-colors"
-                    onClick={() => handlePageChange(currentPage + 1)}
-                    disabled={currentPage === totalPages}
-                >
-                    Load More
-                </button>
+                {/* Next Button */}
+                {currentPage < totalPages && (
+                    <button
+                        className="mt-5 px-5 bg-gray-500 text-white py-2 rounded-md hover:bg-gray-600"
+                        onClick={() => handlePageChange(currentPage + 1)}
+                    >
+                        Next
+                    </button>
+                )}
             </div>
         </div>
     );

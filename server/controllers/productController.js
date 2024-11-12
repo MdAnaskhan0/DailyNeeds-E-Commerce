@@ -94,9 +94,9 @@ const getProductController = async (req, res) => {
       .find({})
       .populate("category")
       .select("-photo")
-      .sort({ createdAt: -1 }) // Sort by createdAt in descending order. Use 1 for ascending.
+      .sort({ createdAt: -1 }) 
       .skip(skip)
-      .limit(limit) // Apply pagination
+      .limit(limit) 
 
       const total = await productModel.countDocuments();
 
