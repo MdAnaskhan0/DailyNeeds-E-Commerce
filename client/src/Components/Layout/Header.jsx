@@ -4,6 +4,7 @@ import { FaBars, FaTimes } from "react-icons/fa";
 import { NavLink } from 'react-router-dom';
 import { useAuth } from "../../Context/Auth";
 import toast from "react-hot-toast";
+import SearchInput from "../Form/SearchInput";
 
 const Navbar = () => {
     const [isOpen, setIsOpen] = useState(false);
@@ -31,6 +32,12 @@ const Navbar = () => {
                 {/* Left Side: Brand */}
                 <div>
                     <NavLink to="/" className="text-lg font-bold flex items-center"><AiFillShop className="mr-2 tracking-wide" />DailyNeeds</NavLink>
+                </div>
+
+                {/* Search Input */}
+
+                <div>
+                    <SearchInput />
                 </div>
 
                 {/* Right Side: Menu for Desktop */}
