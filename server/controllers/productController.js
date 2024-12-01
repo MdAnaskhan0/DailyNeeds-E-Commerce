@@ -281,7 +281,7 @@ const productFilterController = async (req, res) => {
     }
     const filterproduct = await productModel.find(args);
 
-    console.log(args)
+    console.log(args);
     res.status(200).send({
       success: true,
       message: "product filter successfully",
@@ -300,8 +300,7 @@ const productFilterController = async (req, res) => {
 //product count
 
 const productCountController = async (req, res) => {
-
-  console.log("hello")
+  console.log("hello");
   try {
     const total = await productModel.find({}).estimatedDocumentCount();
     res.status(200).send({
@@ -353,5 +352,5 @@ module.exports = {
   updateProductController,
   productFilterController,
   productCountController,
-  productlistController
+  productlistController,
 };
