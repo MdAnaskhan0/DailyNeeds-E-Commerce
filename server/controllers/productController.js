@@ -300,6 +300,8 @@ const productFilterController = async (req, res) => {
 //product count
 
 const productCountController = async (req, res) => {
+
+  console.log("hello")
   try {
     const total = await productModel.find({}).estimatedDocumentCount();
     res.status(200).send({
