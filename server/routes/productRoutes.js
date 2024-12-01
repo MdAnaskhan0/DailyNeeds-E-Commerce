@@ -9,9 +9,7 @@ const {
   productPhotoController,
   deleteProductController,
   updateProductController,
-  productFilterController,
-  productCountController,
-  productlistController
+  productFilterController
 } = require("../controllers/productController");
 
 //routes
@@ -51,15 +49,6 @@ router.get("/product-photo/:pid", productPhotoController);
 //filters
 
 router.post('/product-filters',productFilterController)
-
-//product count
-
-router.get('/product-count',productCountController);
-
-//product count by page wise
-
-router.get("/product-list/:page",productlistController)
-
 
 // delete product 
 router.delete(
