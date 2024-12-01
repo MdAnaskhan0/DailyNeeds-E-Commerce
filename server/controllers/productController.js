@@ -276,8 +276,31 @@ try {
   if(checked.length>0){
     args.category={$in:checked};
   }
+
+};
+
+//product count
+
+const productCountController = async (req, res) => {
+
+  console.log("hello")
+  try {
+    const total = await productModel.find({}).estimatedDocumentCount();
+    res.status(200).send({
+      success: true,
+      total,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(400).send({
+      success: false,
+      message: "Error in product count",
+      error: error.message,
+    });
+
   if(radio.length){
     args.price={$gte:radio[0],$lte:radio[1]};
+
   }
   const filterproduct=await productModel.find(args);
 
