@@ -268,22 +268,29 @@ const updateProductController = async (req, res) => {
 //product filter 
 
 const productFilterController = async (req, res) => {
-
 try {
-  
-  const { checked, radio } = req.body;
-  let args={}
-  if(checked.length>0){
-    args.category={$in:checked};
+    console.log(args);
+    res.status(200).send({
+      success: true,
+      message: "product filter successfully",
+      filterproduct,
+    });
+  } catch (error) {
+    res.status(500).send({
+      success: false,
+      message: "Error in product filter",
+      error: error.message,
+      error,
+    });
   }
 
 };
 
 //product count
 
-const productCountController = async (req, res) => {
 
-  console.log("hello")
+
+const productCountController = async (req, res) => {
   try {
     const total = await productModel.find({}).estimatedDocumentCount();
     res.status(200).send({
@@ -297,28 +304,32 @@ const productCountController = async (req, res) => {
       message: "Error in product count",
       error: error.message,
     });
-
-  if(radio.length){
-    args.price={$gte:radio[0],$lte:radio[1]};
-
   }
-  const filterproduct=await productModel.find(args);
-
-  res.status(200).send({
-    success: true,
-    message: "product filter successfully",
-    filterproduct
-  })
-} catch (error) {
-  res.status(500).send({
-    success: false,
-    message: "Error in product filter",
-    error: error.message,
-    error
-  })
 }
-}
+const productlistController = async (req, res) => {
+  try {
+    const perpage = 10;
+    const page = req.params.page ? req.params.page : 1;
+    const product = await productModel
+      .find({})
+      .select("-photo")
+      .skip((page - 1) * perpage)
+      .limit(perpage)
+      .sort({ createdAt: -1 });
 
+    res.status(200).send({
+      success: true,
+      product,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(400).send({
+      success: false,
+      message: "Error in product list",
+      error: error.message,
+    });
+  }
+};
 
 module.exports = {
   createProductController,
@@ -328,5 +339,11 @@ module.exports = {
   productPhotoController,
   deleteProductController,
   updateProductController,
+
+  productFilterController,
+  productCountController,
+  productlistController,
+
   productFilterController
+
 };
