@@ -94,11 +94,12 @@ const getProductController = async (req, res) => {
       .find({})
       .populate("category")
       .select("-photo")
-      .sort({ createdAt: -1 })
+      .sort({ createdAt: -1 }) 
       .skip(skip)
-      .limit(limit);
+      .limit(limit) 
 
-    const total = await productModel.countDocuments();
+      const total = await productModel.countDocuments();
+
 
     res.status(200).send({
       success: true,
@@ -237,14 +238,10 @@ const updateProductController = async (req, res) => {
     }
 
     //save product
-    const products = await productModel.findByIdAndUpdate(
-      req.params.pid,
-      {
-        ...req.body,
-        slug: slugify(name),
-      },
-      { new: true }
-    );
+    const products = await productModel.findByIdAndUpdate(req.params.pid, {
+      ...req.body,
+      slug: slugify(name),
+    }, { new: true });
 
     if (photo) {
       products.photo.data = photo.buffer;
@@ -267,20 +264,11 @@ const updateProductController = async (req, res) => {
   }
 };
 
-//product filter
+
+//product filter 
 
 const productFilterController = async (req, res) => {
-  try {
-    const { checked, radio } = req.body;
-    let args = {};
-    if (checked.length > 0) {
-      args.category = { $in: checked };
-    }
-    if (radio.length) {
-      args.price = { $gte: radio[0], $lte: radio[1] };
-    }
-    const filterproduct = await productModel.find(args);
-
+try {
     console.log(args);
     res.status(200).send({
       success: true,
@@ -295,10 +283,10 @@ const productFilterController = async (req, res) => {
       error,
     });
   }
+
 };
 
 //product count
-
 
 
 
@@ -317,9 +305,7 @@ const productCountController = async (req, res) => {
       error: error.message,
     });
   }
-};
-
-
+}
 const productlistController = async (req, res) => {
   try {
     const perpage = 10;
@@ -344,6 +330,7 @@ const productlistController = async (req, res) => {
     });
   }
 };
+
 module.exports = {
   createProductController,
   upload,
@@ -352,7 +339,11 @@ module.exports = {
   productPhotoController,
   deleteProductController,
   updateProductController,
+
   productFilterController,
   productCountController,
   productlistController,
+
+  productFilterController
+
 };
